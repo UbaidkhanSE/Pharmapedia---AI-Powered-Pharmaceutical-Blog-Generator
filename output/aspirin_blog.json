@@ -1,0 +1,15 @@
+{
+  "drug_name": "Aspirin",
+  "brand_names": "Naproxen",
+  "manufacturer": "A-S Medication Solutions",
+  "title": "How to use Aspirin",
+  "blog_content": "How to use Aspirin\n\nIntroduction\nAspirin is one of the most widely used nonsteroidal anti-inflammatory drugs (NSAIDs) in the world. It is an acetylsalicylic acid derivative that blocks the enzyme COX-1, which is responsible for the production of inflammatory prostaglandins. Aspirin is used to treat a wide range of conditions, including rheumatoid arthritis, osteoarthritis, and ankylosing spondylitis. It is also used to treat symptoms of acute and chronic pain in conditions such as migraine, headaches, and postoperative pain. In this blog, we will explain the benefits and uses of Aspirin, as well as common side effects and warnings.\n\nWhat is Aspirin?\nAspirin is a white crystalline powder that is produced from aspirin bark. Aspirin has been around for over 100 years and has become one of the most widely used medications in the world. Aspirin is used to treat a wide range of conditions, including:\n\n- Rheumatoid arthritis: Aspirin is often used in combination with other medications to treat RA symptoms such as joint pain, stiffness, and swelling. It is also used",
+  "image_filename": "aspirin_blog.png",
+  "image_path": "C:\\BlogAgent\\output\\aspirin_blog.png",
+  "fda_data": {
+    "indications": "1 INDICATIONS AND USAGE Naproxen tablets and naproxen sodium tablets are indicated for: the relief of the signs and symptoms of: \u2022 rheumatoid arthritis \u2022 osteoarthritis \u2022 ankylosing spondylitis \u2022 Poly",
+    "dosage": "2 DOSAGE AND ADMINISTRATION Use the lowest effective dosage for shortest duration consistent with individual patient treatment goals. ( 2.1 ) Rheumatoid Arthritis, Osteoarthritis, and Ankylosing Spond",
+    "warnings": "N/A"
+  },
+  "status": "success"
+}
