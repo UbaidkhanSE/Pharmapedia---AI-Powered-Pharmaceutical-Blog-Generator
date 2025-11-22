@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmapedia - Advanced Blog Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%, #f093fb 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        
+        .main {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .input-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            height: fit-content;
+            animation: slideRight 0.6s ease-out;
+        }
+        
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .output-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideLeft 0.6s ease-out;
+        }
+        
+        @keyframes slideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .input-section h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+            font-size: 1.6em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(-1px);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .output-section h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+        
+        .result {
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #e0e0e0;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 14px 20px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .tab-button:hover {
+            color: #764ba2;
+        }
+        
+        .tab-button.active {
+            border-bottom-color: #667eea;
+            color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .blog-image {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .blog-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .blog-text {
+            line-height: 1.8;
+            color: #333;
+            font-size: 1.05em;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .metadata {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .meta-item {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .meta-label {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .meta-value {
+            color: #333;
+            font-size: 1.05em;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading p {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        .error {
+            background: linear-gradient(135deg, #ff6b6b15 0%, #ff000015 100%);
+            color: #c33;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        .error.show {
+            display: block;
+        }
+        
+        .success-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .fda-data {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.9em;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        
+        @media (max-width: 1024px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+            
+            .metadata {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Pharmapedia</h1>
+            <p>AI-Powered Pharmaceutical Blog Generator</p>
+        </div>
+        
+        <div class="main">
+            <div class="input-section">
+                <h2>Generate Blog</h2>
+                
+                <div class="error" id="error"></div>
+                
+                <div class="form-group">
+                    <label for="drugName">Drug Name *</label>
+                    <input type="text" id="drugName" placeholder="e.g., Aspirin" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="blogTitle">Blog Title (Optional)</label>
+                    <input type="text" id="blogTitle" placeholder="e.g., How to Use Aspirin">
+                </div>
+                
+                <button onclick="generateBlog()" id="generateBtn">Generate Blog</button>
+            </div>
+            
+            <div class="output-section">
+                <h2>Generated Blog</h2>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Processing... This may take 3-4 minutes</p>
+                </div>
+                
+                <div class="result" id="result">
+                    <div class="success-badge" id="successBadge">✓ Successfully Generated</div>
+                    
+                    <div class="metadata">
+                        <div class="meta-item">
+                            <div class="meta-label">Drug Name</div>
+                            <div class="meta-value" id="drugResult"></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Brand Name</div>
+                            <div class="meta-value" id="brandResult"></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Title</div>
+                            <div class="meta-value" id="titleResult"></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Manufacturer</div>
+                            <div class="meta-value" id="manufacturerResult"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="tabs">
+                        <button class="tab-button active" onclick="switchTab('content', event)">Blog Content</button>
+                        <button class="tab-button" onclick="switchTab('image', event)">Image</button>
+                        <button class="tab-button" onclick="switchTab('data', event)">FDA Data</button>
+                    </div>
+                    
+                    <div class="tab-content show" id="tab-content">
+                        <div class="blog-text" id="blogResult"></div>
+                    </div>
+                    
+                    <div class="tab-content" id="tab-image">
+                        <div style="text-align: center;">
+                            <img id="blogImageResult" class="blog-image" alt="Generated Image">
+                            <p id="imageStatus" style="color: #667eea; font-weight: 600;"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="tab-data">
+                        <div class="fda-data" id="fdaResult"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = "http://127.0.0.1:8000";
+        
+        async function generateBlog() {
+            const drugName = document.getElementById("drugName").value.trim();
+            const blogTitle = document.getElementById("blogTitle").value.trim();
+            
+            if (!drugName) {
+                showError("Please enter a drug name");
+                return;
+            }
+            
+            clearError();
+            showLoading(true);
+            
+            try {
+                const response = await fetch(`${API_URL}/generate-blog`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        drug_name: drugName,
+                        title: blogTitle || null
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.status === "success") {
+                    displayResult(data);
+                    showLoading(false);
+                    showResult(true);
+                } else {
+                    throw new Error(data.message || "Unknown error");
+                }
+                
+            } catch (error) {
+                showLoading(false);
+                showError("Error: " + error.message + ". Make sure FastAPI is running on http://127.0.0.1:8000");
+                console.error("Error:", error);
+            }
+        }
+        
+        function displayResult(data) {
+            document.getElementById("drugResult").textContent = data.drug_name;
+            document.getElementById("brandResult").textContent = data.brand_names || "N/A";
+            document.getElementById("titleResult").textContent = data.title;
+            document.getElementById("manufacturerResult").textContent = data.manufacturer || "N/A";
+            document.getElementById("blogResult").textContent = data.blog_content;
+            document.getElementById("fdaResult").textContent = JSON.stringify(data.fda_data, null, 2);
+            
+            const imageUrl = `C:\\BlogAgent\\output\\${data.image_filename}`;
+            const imgElement = document.getElementById("blogImageResult");
+            
+            fetch(`${API_URL}/images/${data.image_filename}`)
+                .then(res => {
+                    if (res.ok) {
+                        imgElement.src = `${API_URL}/images/${data.image_filename}`;
+                        document.getElementById("imageStatus").textContent = "Image loaded successfully";
+                    } else {
+                        imgElement.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23e0e0e0' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='18' fill='%23999'%3EImage saved at:%3C/text%3E%3Ctext x='50%25' y='60%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23999'%3E" + imageUrl + "%3C/text%3E%3C/svg%3E";
+                        document.getElementById("imageStatus").textContent = "Local file: " + imageUrl;
+                    }
+                })
+                .catch(() => {
+                    document.getElementById("imageStatus").textContent = "Local file: " + imageUrl;
+                });
+        }
+        
+        function switchTab(tabName, event) {
+            document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("show"));
+            document.querySelectorAll(".tab-button").forEach(el => el.classList.remove("active"));
+            
+            if (tabName === "content") {
+                document.getElementById("tab-content").classList.add("show");
+            } else if (tabName === "image") {
+                document.getElementById("tab-image").classList.add("show");
+            } else if (tabName === "data") {
+                document.getElementById("tab-data").classList.add("show");
+            }
+            
+            event.target.classList.add("active");
+        }
+        
+        function showLoading(show) {
+            document.getElementById("loading").classList.toggle("show", show);
+            document.getElementById("generateBtn").disabled = show;
+        }
+        
+        function showResult(show) {
+            document.getElementById("result").classList.toggle("show", show);
+        }
+        
+        function showError(msg) {
+            const errorEl = document.getElementById("error");
+            errorEl.textContent = msg;
+            errorEl.classList.add("show");
+        }
+        
+        function clearError() {
+            document.getElementById("error").classList.remove("show");
+        }
+    </script>
+</body>
+</html>
